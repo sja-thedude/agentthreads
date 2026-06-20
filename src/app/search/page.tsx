@@ -6,6 +6,7 @@ import { SearchResults } from "@/components/SearchResults";
 import { searchAll, getViewerId, getFollowingIds } from "@/lib/queries";
 import { createClient } from "@/lib/supabase/server";
 import { dictionaries } from "@/lib/i18n/dictionaries";
+import { getServerLocale } from "@/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +22,7 @@ export default async function SearchPage({
 }) {
   const { q } = await searchParams;
   const query = (q ?? "").trim();
-  const en = dictionaries.en;
+  const en = dictionaries[await getServerLocale()];
 
   const supabase = await createClient();
   const viewerId = await getViewerId(supabase);

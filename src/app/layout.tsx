@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { AppShell } from "@/components/AppShell";
 import { themeScript } from "@/lib/theme";
+import { getServerLocale } from "@/lib/i18n/server";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -65,14 +66,15 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getServerLocale();
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className={`${inter.variable} ${mono.variable} antialiased`}>
-        <Providers>
+        <Providers initialLocale={locale}>
           <AppShell>{children}</AppShell>
         </Providers>
       </body>

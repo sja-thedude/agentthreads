@@ -6,7 +6,16 @@ import { useI18n } from "@/lib/i18n";
 import { LOCALES, LOCALE_LABELS, LOCALE_FLAGS } from "@/lib/i18n/dictionaries";
 import { cn } from "@/lib/cn";
 
-export function LanguageSwitcher({ withLabel = false }: { withLabel?: boolean }) {
+export function LanguageSwitcher({
+  withLabel = false,
+  direction = "up",
+  align = "left",
+}: {
+  withLabel?: boolean;
+  /** Which way the menu opens. Sidebar (bottom of screen) = "up", header = "down". */
+  direction?: "up" | "down";
+  align?: "left" | "right";
+}) {
   const { locale, setLocale, t } = useI18n();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -35,7 +44,11 @@ export function LanguageSwitcher({ withLabel = false }: { withLabel?: boolean })
       {open && (
         <div
           role="menu"
-          className="animate-in absolute right-0 bottom-full z-50 mb-2 w-44 overflow-hidden rounded-2xl border border-border bg-elevated p-1.5 shadow-2xl md:bottom-auto md:top-full md:mt-2 md:mb-0"
+          className={cn(
+            "animate-in absolute z-50 w-44 overflow-hidden rounded-2xl border border-border bg-elevated p-1.5 shadow-2xl",
+            direction === "up" ? "bottom-full mb-2" : "top-full mt-2",
+            align === "right" ? "right-0" : "left-0"
+          )}
         >
           {LOCALES.map((l) => (
             <button

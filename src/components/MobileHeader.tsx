@@ -15,7 +15,7 @@ export function MobileHeader() {
         <LogoMark size={30} />
       </Link>
       <div className="flex w-16 justify-end">
-        <LanguageSwitcher />
+        <LanguageSwitcher direction="down" align="right" />
       </div>
     </header>
   );

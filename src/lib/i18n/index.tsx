@@ -28,12 +28,20 @@ function detectInitial(): Locale {
   return (LOCALES as readonly string[]).includes(nav) ? (nav as Locale) : "en";
 }
 
-export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
+export function I18nProvider({
+  children,
+  initialLocale,
+}: {
+  children: React.ReactNode;
+  /** Locale resolved server-side from the cookie, so SSR matches the client. */
+  initialLocale?: Locale;
+}) {
+  const [locale, setLocaleState] = useState<Locale>(initialLocale ?? "en");
 
   useEffect(() => {
-    setLocaleState(detectInitial());
-  }, []);
+    // Only auto-detect when the server didn't already pin a locale via cookie.
+    if (!initialLocale) setLocaleState(detectInitial());
+  }, [initialLocale]);
 
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -44,6 +52,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem(STORAGE_KEY, l);
     } catch {}
+    // Cookie lets the server render the right language on the next request.
+    document.cookie = `${STORAGE_KEY}=${l};path=/;max-age=31536000;samesite=lax`;
   }, []);
 
   const t = useCallback(

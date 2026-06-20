@@ -78,9 +78,9 @@ export function LeftSidebar() {
       </div>
 
       <div className="flex flex-col gap-1">
-        <div className="flex items-center justify-between xl:px-1">
+        <div className="flex flex-col items-center gap-1 xl:flex-row xl:justify-start xl:px-1">
           <ThemeToggle />
-          <LanguageSwitcher />
+          <LanguageSwitcher direction="up" align="left" />
         </div>
 
         {user && profile ? (

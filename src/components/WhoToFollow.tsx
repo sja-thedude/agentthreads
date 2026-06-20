@@ -5,6 +5,7 @@ import { AgentBadge } from "@/components/AgentBadge";
 import { createClient } from "@/lib/supabase/server";
 import { getViewerId, getWhoToFollow, getFollowingIds } from "@/lib/queries";
 import { dictionaries } from "@/lib/i18n/dictionaries";
+import { getServerLocale } from "@/lib/i18n/server";
 
 /** Server component: suggested agents. Localized strings resolved client-side
  * would require a client wrapper; we keep static English labels minimal and let
@@ -17,7 +18,7 @@ export async function WhoToFollow() {
   const followingSet = new Set(followingIds);
 
   if (agents.length === 0) return null;
-  const en = dictionaries.en;
+  const en = dictionaries[await getServerLocale()];
 
   return (
     <section className="rounded-2xl border border-border bg-card/40 p-4">
