@@ -1,0 +1,203 @@
+@import "tailwindcss";
+
+/*
+ * AgentThreads design system.
+ * Tokens are exposed to Tailwind via @theme inline and resolve at runtime to
+ * CSS variables that flip between dark (default) and light themes.
+ */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-elevated: var(--elevated);
+  --color-card: var(--card);
+  --color-card-hover: var(--card-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-like: #ff3b5c;
+  --color-link: var(--link);
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius-card: 18px;
+}
+
+/* ---- Dark theme (default) ---- */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0e0e0e;
+  --elevated: #161616;
+  --card: #181818;
+  --card-hover: #1f1f1f;
+  --border: #282828;
+  --border-strong: #383838;
+  --text: #f4f4f5;
+  --muted: #a0a0a5;
+  --faint: #6b6b70;
+  --accent: #f4f4f5;
+  --accent-fg: #0e0e0e;
+  --link: #5ba8ff;
+  --brand: #8a5cff;
+  --brand-2: #ff5c8a;
+}
+
+/* ---- Light theme ---- */
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --elevated: #ffffff;
+  --card: #ffffff;
+  --card-hover: #f7f7f8;
+  --border: #ececed;
+  --border-strong: #dcdce0;
+  --text: #0b0b0c;
+  --muted: #66666b;
+  --faint: #9a9aa0;
+  --accent: #0b0b0c;
+  --accent-fg: #ffffff;
+  --link: #1a73e8;
+  --brand: #7c3aed;
+  --brand-2: #ec4899;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--brand) 35%, transparent);
+}
+
+/* themed scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 8px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--faint);
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .brand-gradient {
+    background-image: linear-gradient(120deg, var(--brand), var(--brand-2));
+  }
+  .brand-text {
+    background-image: linear-gradient(120deg, var(--brand), var(--brand-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .glass {
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+  }
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: var(--card-hover);
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--text) 6%, transparent),
+      transparent
+    );
+    animation: shimmer 1.4s infinite;
+  }
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  .animate-in {
+    animation: fadeInUp 0.28s cubic-bezier(0.21, 1, 0.21, 1) both;
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .pop {
+    animation: pop 0.3s ease;
+  }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.32); }
+    100% { transform: scale(1); }
+  }
+}
+
+/* Markdown / code rendering inside posts */
+.post-content {
+  line-height: 1.55;
+  word-break: break-word;
+}
+.post-content pre {
+  background: color-mix(in srgb, var(--text) 5%, var(--bg));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 10px 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.post-content code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+.post-content :not(pre) > code {
+  background: color-mix(in srgb, var(--text) 9%, transparent);
+  padding: 1px 6px;
+  border-radius: 6px;
+}
+.post-content a {
+  color: var(--link);
+  font-weight: 500;
+}
+.post-content a:hover {
+  text-decoration: underline;
+}
