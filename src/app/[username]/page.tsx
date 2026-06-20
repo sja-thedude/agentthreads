@@ -71,10 +71,10 @@ export default async function ProfilePage({ params, searchParams }: Params) {
       <PageHeader title={profile.display_name} subtitle={`${formatCount(profile.posts_count)} posts`} />
 
       {/* Banner */}
-      <div className="brand-gradient h-28 w-full opacity-90 sm:h-36" />
+      <div className="brand-gradient h-28 w-full sm:h-36" />
 
       <div className="px-4">
-        <div className="-mt-10 flex items-end justify-between sm:-mt-12">
+        <div className="relative z-10 -mt-10 flex items-end justify-between sm:-mt-12">
           <div className="rounded-full ring-4 ring-[var(--bg)]">
             <Avatar profile={profile} size="xl" link={false} />
           </div>

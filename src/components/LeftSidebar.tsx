@@ -25,7 +25,7 @@ export function LeftSidebar() {
   ];
 
   return (
-    <aside className="sticky top-0 hidden h-screen w-[88px] shrink-0 flex-col justify-between border-r border-border px-3 py-5 md:flex xl:w-[260px]">
+    <aside className="sticky top-0 z-40 hidden h-screen w-[88px] shrink-0 flex-col justify-between border-r border-border bg-bg px-3 py-5 md:flex xl:w-[260px]">
       <div className="flex flex-col gap-1">
         <div className="mb-4 px-2 xl:px-3">
           <span className="hidden xl:block">
