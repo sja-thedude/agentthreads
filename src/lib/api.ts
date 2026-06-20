@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import { createApiClient } from "@/lib/supabase/server";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-export const PUBLIC_SELECT =
-  "*, author:profiles!posts_author_id_fkey(*), repost_of:posts!posts_repost_of_id_fkey(*, author:profiles!posts_author_id_fkey(*))";
+export const PUBLIC_SELECT = "*, author:profiles!posts_author_id_fkey(*)";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",

@@ -4,8 +4,33 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 export const PAGE_SIZE = 15;
 
-const POST_SELECT =
-  "*, author:profiles!posts_author_id_fkey(*), repost_of:posts!posts_repost_of_id_fkey(*, author:profiles!posts_author_id_fkey(*))";
+const POST_SELECT = "*, author:profiles!posts_author_id_fkey(*)";
+
+/**
+ * Attaches the original post (with author) for any reposts in the list.
+ * Done as a separate query because PostgREST can't disambiguate the two
+ * self-referencing FKs on `posts` in a single embed.
+ */
+async function attachReposts(
+  supabase: Client,
+  posts: PostWithAuthor[]
+): Promise<PostWithAuthor[]> {
+  const originalIds = posts
+    .map((p) => p.repost_of_id)
+    .filter((id): id is string => !!id);
+  if (originalIds.length === 0) return posts;
+
+  const { data } = await supabase
+    .from("posts")
+    .select(POST_SELECT)
+    .in("id", originalIds);
+  const byId = new Map(
+    (data ?? []).map((o) => [(o as PostWithAuthor).id, o as PostWithAuthor])
+  );
+  return posts.map((p) =>
+    p.repost_of_id ? { ...p, repost_of: byId.get(p.repost_of_id) ?? null } : p
+  );
+}
 
 type Client = SupabaseClient;
 
@@ -32,6 +57,15 @@ async function attachLikes(
     .in("post_id", ids);
   const liked = new Set((data ?? []).map((l) => l.post_id));
   return posts.map((p) => ({ ...p, liked_by_me: liked.has(p.id) }));
+}
+
+/** Attaches viewer like-state and repost originals to a list of posts. */
+async function enrich(
+  supabase: Client,
+  posts: PostWithAuthor[],
+  viewerId: string | null
+): Promise<PostWithAuthor[]> {
+  return attachReposts(supabase, await attachLikes(supabase, posts, viewerId));
 }
 
 export type FeedScope = "for-you" | "following";
@@ -73,7 +107,7 @@ export async function getFeed(opts: {
     rows = rows.slice(0, limit);
   }
 
-  rows = await attachLikes(supabase, rows, viewerId);
+  rows = await enrich(supabase, rows, viewerId);
   return { posts: rows, nextCursor };
 }
 
@@ -106,7 +140,7 @@ export async function getPost(id: string): Promise<PostWithAuthor | null> {
       .maybeSingle();
     post.parent = (parent as unknown as PostWithAuthor) ?? null;
   }
-  const [enriched] = await attachLikes(supabase, [post], viewerId);
+  const [enriched] = await enrich(supabase, [post], viewerId);
   return enriched;
 }
 
@@ -119,7 +153,7 @@ export async function getReplies(postId: string): Promise<PostWithAuthor[]> {
     .select(POST_SELECT)
     .eq("parent_id", postId)
     .order("created_at", { ascending: true });
-  return attachLikes(supabase, (data ?? []) as unknown as PostWithAuthor[], viewerId);
+  return enrich(supabase, (data ?? []) as unknown as PostWithAuthor[], viewerId);
 }
 
 export async function getProfileByUsername(username: string): Promise<Profile | null> {
@@ -155,7 +189,7 @@ export async function getProfilePosts(
     const ordered = ids
       .map((id) => byId.get(id))
       .filter(Boolean) as unknown as PostWithAuthor[];
-    return attachLikes(supabase, ordered, viewerId);
+    return enrich(supabase, ordered, viewerId);
   }
 
   let query = supabase
@@ -168,7 +202,7 @@ export async function getProfilePosts(
   query = tab === "replies" ? query.not("parent_id", "is", null) : query.is("parent_id", null);
 
   const { data } = await query;
-  return attachLikes(supabase, (data ?? []) as unknown as PostWithAuthor[], viewerId);
+  return enrich(supabase, (data ?? []) as unknown as PostWithAuthor[], viewerId);
 }
 
 /** Whether the viewer follows the given profile. */
@@ -247,7 +281,7 @@ export async function searchAll(q: string): Promise<{
   }
 
   return {
-    posts: await attachLikes(supabase, postRows, viewerId),
+    posts: await enrich(supabase, postRows, viewerId),
     agents: (agents ?? []) as Profile[],
   };
 }

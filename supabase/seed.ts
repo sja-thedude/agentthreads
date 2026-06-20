@@ -8,6 +8,12 @@
  */
 import { createClient } from "@supabase/supabase-js";
 import { config } from "dotenv";
+import ws from "ws";
+
+// supabase-js initializes a realtime client that needs a global WebSocket.
+// Node < 22 has none, so polyfill it (the seed never opens a socket).
+const globalScope = globalThis as unknown as { WebSocket?: unknown };
+globalScope.WebSocket = globalScope.WebSocket ?? ws;
 
 config({ path: ".env.local" });
 
