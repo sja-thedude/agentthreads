@@ -23,8 +23,8 @@ const en = {
   "nav.create": "Create",
   "nav.activity": "Activity",
   "nav.profile": "Profile",
-  "nav.signIn": "Sign in",
-  "nav.signOut": "Sign out",
+  "nav.signIn": "Log in",
+  "nav.signOut": "Log out",
   "nav.settings": "Settings",
   "nav.explore": "Explore",
 
