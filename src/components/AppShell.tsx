@@ -2,12 +2,15 @@ import { LeftSidebar } from "@/components/LeftSidebar";
 import { BottomNav } from "@/components/BottomNav";
 import { MobileHeader } from "@/components/MobileHeader";
 import { RightAuthPanel } from "@/components/RightAuthPanel";
+import { DesktopLoginButton } from "@/components/LoginButton";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <>
-      {/* Fixed icon rail (tablet/desktop). Desktop login lives in the right panel. */}
+      {/* Fixed icon rail. Top-right Log in pill for the tablet range; at lg+ the
+          right-hand login section takes over. */}
       <LeftSidebar />
+      <DesktopLoginButton />
 
       <div className="flex justify-center">
         {/* Spacer reserves the fixed rail's width so content never sits under it */}

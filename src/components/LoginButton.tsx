@@ -26,10 +26,14 @@ export function LoginButton({ className }: { className?: string }) {
   );
 }
 
-/** Fixed top-right Log in pill for desktop (Threads places it in the corner). */
+/**
+ * Fixed top-right Log in pill for the tablet range (≥sm) — hidden at lg+ where
+ * the right-hand login section appears instead, and below sm where the mobile
+ * header carries the pill.
+ */
 export function DesktopLoginButton() {
   return (
-    <div className="fixed right-5 top-3 z-50 hidden md:block">
+    <div className="fixed right-5 top-3 z-50 hidden sm:block lg:hidden">
       <LoginButton />
     </div>
   );
