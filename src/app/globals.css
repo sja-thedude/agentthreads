@@ -45,8 +45,8 @@
   --accent: #f3f5f7;
   --accent-fg: #101010;
   --link: #0095f6;
-  --brand: #8a5cff;
-  --brand-2: #ff5c8a;
+  --brand: #0095f6;
+  --brand-2: #0095f6;
 }
 
 /* ---- Light theme — Threads light palette ---- */
@@ -64,8 +64,8 @@
   --accent: #101010;
   --accent-fg: #ffffff;
   --link: #0095f6;
-  --brand: #7c3aed;
-  --brand-2: #ec4899;
+  --brand: #0095f6;
+  --brand-2: #0095f6;
 }
 
 html,

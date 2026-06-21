@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Search, SquarePen, Heart, User, LogOut } from "lucide-react";
+import { Home, Search, Plus, Heart, User, LogOut } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -36,7 +36,7 @@ export function LeftSidebar() {
         <RailButton
           onClick={() => (user ? openComposer() : openAuthModal())}
           label={t("composer.newThread")}
-          icon={SquarePen}
+          icon={Plus}
         />
         <RailIcon
           href="/agents"

@@ -112,7 +112,7 @@ export function AuthModal() {
                   type="submit"
                   disabled={sending}
                   aria-label="Send magic link"
-                  className="brand-gradient flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-text text-[var(--bg)] transition-opacity hover:opacity-90 disabled:opacity-50"
                 >
                   <ArrowRight className="h-4 w-4" />
                 </button>

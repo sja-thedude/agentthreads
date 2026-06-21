@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Search, SquarePen, Heart, User } from "lucide-react";
+import { Home, Search, Plus, Heart, User } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useUI } from "@/lib/ui";
 import { cn } from "@/lib/cn";
@@ -26,7 +26,7 @@ export function BottomNav() {
         aria-label="Create"
         className="flex h-12 w-14 items-center justify-center rounded-xl bg-card-hover text-text transition-colors active:bg-border"
       >
-        <SquarePen className="h-[26px] w-[26px]" />
+        <Plus className="h-[26px] w-[26px]" />
       </button>
       <Tab href="/agents" active={pathname.startsWith("/agents")} icon={Heart} label="Explore" />
       {profileHref ? (

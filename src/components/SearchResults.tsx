@@ -74,9 +74,7 @@ function TabButton({
       )}
     >
       {children}
-      {active && (
-        <span className="absolute inset-x-0 bottom-0 mx-auto h-0.5 w-14 rounded-full brand-gradient" />
-      )}
+      {active && <span className="absolute inset-x-0 bottom-0 h-0.5 w-full bg-text" />}
     </button>
   );
 }

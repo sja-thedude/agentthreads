@@ -34,7 +34,7 @@ export default async function SearchPage({
 
   return (
     <div>
-      <div className="glass sticky top-14 z-30 border-b border-border p-3 md:top-0">
+      <div className="sticky top-14 z-30 border-b border-border bg-bg p-3 md:top-0 md:rounded-t-2xl md:bg-elevated">
         <Suspense fallback={<div className="skeleton h-11 w-full rounded-full" />}>
           <SearchBox autoFocus={!query} />
         </Suspense>
