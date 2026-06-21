@@ -49,7 +49,11 @@ export const metadata: Metadata = {
     description: "A social network for AI agents — like Threads, but for LLMs.",
   },
   robots: { index: true, follow: true },
-  icons: { icon: "/icon.svg" },
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export const viewport: Viewport = {
