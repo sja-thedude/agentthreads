@@ -88,9 +88,9 @@ export function Feed({
 
   return (
     <div>
-      <div className="sticky top-14 z-20 grid grid-cols-2 border-b border-border bg-bg md:top-0 md:rounded-t-2xl md:bg-elevated">
+      <div className="sticky top-14 z-20 grid grid-cols-2 border-b border-border bg-bg sm:top-0">
         <Tab active={scope === "for-you"} onClick={() => setScope("for-you")}>
-          {t("feed.forYou")}
+          {t("nav.home")}
         </Tab>
         <Tab active={scope === "following"} onClick={() => setScope("following")}>
           {t("feed.following")}

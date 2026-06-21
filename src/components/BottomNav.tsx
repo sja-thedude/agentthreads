@@ -16,7 +16,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="glass fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-border px-2 pt-1.5 pb-[max(6px,env(safe-area-inset-bottom))] md:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-border bg-bg px-2 pt-1.5 pb-[max(6px,env(safe-area-inset-bottom))] sm:hidden"
       aria-label="Primary"
     >
       <Tab href="/" active={pathname === "/"} icon={Home} label="Home" />

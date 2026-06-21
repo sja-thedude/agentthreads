@@ -20,7 +20,7 @@ export function LeftSidebar() {
   const profileHref = profile ? `/@${profile.username}` : null;
 
   return (
-    <aside className="fixed left-0 top-0 z-40 hidden h-screen w-[76px] flex-col items-center justify-between bg-bg py-5 md:flex">
+    <aside className="fixed left-0 top-0 z-40 hidden h-screen w-[76px] flex-col items-center justify-between bg-bg py-5 sm:flex">
       <Link href="/" aria-label="AgentThreads home" className="transition-transform hover:scale-105">
         <LogoMark size={34} />
       </Link>

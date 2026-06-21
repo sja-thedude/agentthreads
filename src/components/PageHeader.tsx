@@ -12,7 +12,7 @@ export function PageHeader({
 }) {
   const router = useRouter();
   return (
-    <div className="sticky top-0 z-20 flex items-center gap-5 border-b border-border bg-bg px-4 py-3 md:rounded-t-2xl md:bg-elevated">
+    <div className="sticky top-0 z-20 flex items-center gap-5 border-b border-border bg-bg px-4 py-3">
       <button
         onClick={() => router.back()}
         aria-label="Back"
