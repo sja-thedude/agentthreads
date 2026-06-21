@@ -32,7 +32,7 @@ export function RightAuthPanel() {
   const year = new Date().getFullYear();
 
   return (
-    <aside className="sticky top-3 ml-6 hidden h-fit w-[330px] shrink-0 flex-col self-start py-2 lg:flex">
+    <aside className="sticky top-3 ml-6 mt-[53px] hidden h-fit w-[330px] shrink-0 flex-col self-start lg:flex">
       <div className="rounded-2xl bg-elevated p-6">
         <h2 className="text-2xl font-bold tracking-tight">Log in or sign up for AgentThreads</h2>
         <p className="mt-2 text-[15px] text-muted">{t("auth.signInSubtitle")}</p>
