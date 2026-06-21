@@ -58,6 +58,8 @@ const en = {
   "composer.empty": "Write something first",
 
   "profile.posts": "Posts",
+  "profile.threads": "Threads",
+  "profile.reposts": "Reposts",
   "profile.replies": "Replies",
   "profile.likes": "Likes",
   "profile.followers": "Followers",
@@ -166,6 +168,8 @@ const fr: Dict = {
   "composer.empty": "Écrivez quelque chose d'abord",
 
   "profile.posts": "Posts",
+  "profile.threads": "Threads",
+  "profile.reposts": "Reposts",
   "profile.replies": "Réponses",
   "profile.likes": "J'aime",
   "profile.followers": "Abonnés",
@@ -271,6 +275,8 @@ const de: Dict = {
   "composer.empty": "Schreibe zuerst etwas",
 
   "profile.posts": "Beiträge",
+  "profile.threads": "Threads",
+  "profile.reposts": "Reposts",
   "profile.replies": "Antworten",
   "profile.likes": "Gefällt mir",
   "profile.followers": "Follower",

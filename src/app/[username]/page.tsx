@@ -54,7 +54,7 @@ export default async function ProfilePage({ params, searchParams }: Params) {
   if (!profile) notFound();
 
   const tab: ProfileTab =
-    tabParam === "replies" || tabParam === "likes" ? tabParam : "posts";
+    tabParam === "replies" || tabParam === "reposts" ? tabParam : "posts";
 
   const supabase = await createClient();
   const viewerId = await getViewerId(supabase);
@@ -64,46 +64,44 @@ export default async function ProfilePage({ params, searchParams }: Params) {
   ]);
 
   const emptyKey =
-    tab === "replies" ? "No replies yet." : tab === "likes" ? "No liked posts yet." : "No posts yet.";
+    tab === "replies" ? "No replies yet." : tab === "reposts" ? "No reposts yet." : "No posts yet.";
 
   return (
     <div>
       <PageHeader title={profile.display_name} subtitle={`${formatCount(profile.posts_count)} posts`} />
 
-      {/* Banner */}
-      <div className="brand-gradient h-28 w-full sm:h-36" />
-
-      <div className="px-4">
-        <div className="relative z-10 -mt-10 flex items-end justify-between sm:-mt-12">
-          <div className="rounded-full ring-4 ring-[var(--bg)]">
-            <Avatar profile={profile} size="xl" link={false} />
+      <div className="px-4 pt-4">
+        {/* Name + handle on the left, avatar on the right (Threads layout) */}
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5">
+              <h1 className="truncate text-2xl font-bold tracking-tight">
+                {profile.display_name}
+              </h1>
+              {profile.is_agent && <AgentBadge />}
+            </div>
+            <p className="mt-0.5 text-[15px] text-text">@{profile.username}</p>
           </div>
-          <div className="mb-1">
-            <ProfileActions profileId={profile.id} initialFollowing={following} />
-          </div>
+          <Avatar profile={profile} size="xl" link={false} />
         </div>
 
-        <div className="mt-3">
-          <div className="flex items-center gap-1.5">
-            <h1 className="text-xl font-extrabold tracking-tight">{profile.display_name}</h1>
-            {profile.is_agent && <AgentBadge />}
+        {profile.bio && (
+          <div className="mt-3 max-w-prose text-[15px]">
+            <PostContent content={profile.bio} />
           </div>
-          <p className="text-[15px] text-muted">@{profile.username}</p>
+        )}
 
-          {profile.is_agent && (
-            <span className="mt-2 inline-flex items-center gap-1 rounded-full border border-border bg-card-hover px-2.5 py-0.5 text-xs font-medium text-muted">
-              <AgentBadge /> AI Agent
-            </span>
-          )}
-
-          {profile.bio && (
-            <div className="mt-3 max-w-prose">
-              <PostContent content={profile.bio} />
-            </div>
-          )}
-
-          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
-            {profile.website && (
+        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[15px] text-muted">
+          <span>
+            <span className="text-text">{formatCount(profile.followers_count)}</span> followers
+          </span>
+          <span>·</span>
+          <span>
+            <span className="text-text">{formatCount(profile.following_count)}</span> following
+          </span>
+          {profile.website && (
+            <>
+              <span>·</span>
               <a
                 href={profile.website.startsWith("http") ? profile.website : `https://${profile.website}`}
                 target="_blank"
@@ -113,18 +111,17 @@ export default async function ProfilePage({ params, searchParams }: Params) {
                 <LinkIcon className="h-4 w-4" />
                 {profile.website.replace(/^https?:\/\//, "")}
               </a>
-            )}
-            <span className="flex items-center gap-1">
-              <CalendarDays className="h-4 w-4" />
-              {joinedDate(profile.created_at)}
-            </span>
-          </div>
+            </>
+          )}
+        </div>
 
-          <div className="mt-3 flex gap-5 text-sm">
-            <Stat n={profile.posts_count} label="Posts" />
-            <Stat n={profile.followers_count} label="Followers" />
-            <Stat n={profile.following_count} label="Following" />
-          </div>
+        <p className="mt-1.5 flex items-center gap-1 text-[13px] text-muted">
+          <CalendarDays className="h-3.5 w-3.5" />
+          {joinedDate(profile.created_at)}
+        </p>
+
+        <div className="mt-4 [&>button]:w-full">
+          <ProfileActions profileId={profile.id} initialFollowing={following} />
         </div>
       </div>
 
@@ -142,13 +139,5 @@ export default async function ProfilePage({ params, searchParams }: Params) {
         </div>
       )}
     </div>
-  );
-}
-
-function Stat({ n, label }: { n: number; label: string }) {
-  return (
-    <span className="text-muted">
-      <span className="font-bold text-text">{formatCount(n)}</span> {label}
-    </span>
   );
 }

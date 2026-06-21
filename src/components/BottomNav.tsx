@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Search, PenSquare, Heart, User } from "lucide-react";
+import { Home, Search, SquarePen, Heart, User } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useUI } from "@/lib/ui";
 import { cn } from "@/lib/cn";
@@ -12,38 +12,34 @@ export function BottomNav() {
   const { user, profile } = useAuth();
   const { openComposer, openAuthModal } = useUI();
 
-  const profileHref = profile ? `/@${profile.username}` : "/search";
+  const profileHref = profile ? `/@${profile.username}` : null;
 
   return (
     <nav
-      className="glass fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-border px-2 pt-2 pb-[max(8px,env(safe-area-inset-bottom))] md:hidden"
+      className="glass fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-border px-2 pt-1.5 pb-[max(6px,env(safe-area-inset-bottom))] md:hidden"
       aria-label="Primary"
     >
       <Tab href="/" active={pathname === "/"} icon={Home} label="Home" />
       <Tab href="/search" active={pathname.startsWith("/search")} icon={Search} label="Search" />
-
       <button
         onClick={() => (user ? openComposer() : openAuthModal())}
-        aria-label="Create post"
-        className="brand-gradient -mt-1 flex h-11 w-14 items-center justify-center rounded-2xl text-white shadow-md transition-transform active:scale-95"
+        aria-label="Create"
+        className="flex h-12 w-14 items-center justify-center rounded-xl bg-card-hover text-text transition-colors active:bg-border"
       >
-        <PenSquare className="h-5 w-5" />
+        <SquarePen className="h-[26px] w-[26px]" />
       </button>
-
-      <Tab
-        href={user ? profileHref : "/agents"}
-        active={pathname.startsWith("/agents")}
-        icon={Heart}
-        label="Explore"
-        onGuard={undefined}
-      />
-      <Tab
-        href={profileHref}
-        active={!!profile && pathname === profileHref}
-        icon={User}
-        label="Profile"
-        onGuard={user ? undefined : openAuthModal}
-      />
+      <Tab href="/agents" active={pathname.startsWith("/agents")} icon={Heart} label="Explore" />
+      {profileHref ? (
+        <Tab href={profileHref} active={pathname === profileHref} icon={User} label="Profile" />
+      ) : (
+        <button
+          onClick={openAuthModal}
+          aria-label="Profile"
+          className="flex h-12 w-12 items-center justify-center text-muted active:text-text"
+        >
+          <User className="h-[26px] w-[26px]" />
+        </button>
+      )}
     </nav>
   );
 }
@@ -53,28 +49,22 @@ function Tab({
   active,
   icon: Icon,
   label,
-  onGuard,
 }: {
   href: string;
   active: boolean;
   icon: typeof Home;
   label: string;
-  onGuard?: () => void;
 }) {
-  const className = cn(
-    "flex h-11 w-12 items-center justify-center rounded-xl transition-colors duration-150",
-    active ? "text-text" : "text-faint hover:text-text"
-  );
-  if (onGuard) {
-    return (
-      <button onClick={onGuard} aria-label={label} className={className}>
-        <Icon className={cn("h-6 w-6", active && "stroke-[2.4]")} />
-      </button>
-    );
-  }
   return (
-    <Link href={href} aria-label={label} className={className}>
-      <Icon className={cn("h-6 w-6", active && "stroke-[2.4]")} />
+    <Link
+      href={href}
+      aria-label={label}
+      className={cn(
+        "flex h-12 w-12 items-center justify-center transition-colors duration-150",
+        active ? "text-text" : "text-muted"
+      )}
+    >
+      <Icon className="h-[26px] w-[26px]" strokeWidth={active ? 2.6 : 2} />
     </Link>
   );
 }

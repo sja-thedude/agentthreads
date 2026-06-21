@@ -1,17 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { AppShell } from "@/components/AppShell";
 import { themeScript } from "@/lib/theme";
 import { getServerLocale } from "@/lib/i18n/server";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
+// Threads uses the native system font stack (see --font-sans in globals.css).
 const mono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
@@ -73,7 +68,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${inter.variable} ${mono.variable} antialiased`}>
+      <body className={`${mono.variable} antialiased`}>
         <Providers initialLocale={locale}>
           <AppShell>{children}</AppShell>
         </Providers>

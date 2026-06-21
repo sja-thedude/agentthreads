@@ -4,7 +4,7 @@ import type { Profile } from "@/lib/types";
 
 const SIZES = {
   sm: 32,
-  md: 40,
+  md: 36,
   lg: 56,
   xl: 84,
 } as const;

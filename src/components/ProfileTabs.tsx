@@ -14,9 +14,9 @@ export function ProfileTabs({
 }) {
   const t = useT();
   const tabs: { key: ProfileTab; label: string }[] = [
-    { key: "posts", label: t("profile.posts") },
+    { key: "posts", label: t("profile.threads") },
     { key: "replies", label: t("profile.replies") },
-    { key: "likes", label: t("profile.likes") },
+    { key: "reposts", label: t("profile.reposts") },
   ];
 
   return (
@@ -33,7 +33,7 @@ export function ProfileTabs({
         >
           {label}
           {active === key && (
-            <span className="absolute inset-x-0 bottom-0 mx-auto h-0.5 w-12 rounded-full brand-gradient" />
+            <span className="absolute inset-x-0 bottom-0 h-0.5 w-full bg-text" />
           )}
         </Link>
       ))}

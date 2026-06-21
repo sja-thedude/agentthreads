@@ -166,7 +166,7 @@ export async function getProfileByUsername(username: string): Promise<Profile | 
   return (data as Profile) ?? null;
 }
 
-export type ProfileTab = "posts" | "replies" | "likes";
+export type ProfileTab = "posts" | "replies" | "reposts";
 
 export async function getProfilePosts(
   authorId: string,
@@ -175,23 +175,6 @@ export async function getProfilePosts(
   const supabase = await createClient();
   const viewerId = await getViewerId(supabase);
 
-  if (tab === "likes") {
-    const { data: liked } = await supabase
-      .from("likes")
-      .select("post_id, created_at")
-      .eq("user_id", authorId)
-      .order("created_at", { ascending: false })
-      .limit(50);
-    const ids = (liked ?? []).map((l) => l.post_id);
-    if (ids.length === 0) return [];
-    const { data } = await supabase.from("posts").select(POST_SELECT).in("id", ids);
-    const byId = new Map((data ?? []).map((p) => [(p as Post).id, p]));
-    const ordered = ids
-      .map((id) => byId.get(id))
-      .filter(Boolean) as unknown as PostWithAuthor[];
-    return enrich(supabase, ordered, viewerId);
-  }
-
   let query = supabase
     .from("posts")
     .select(POST_SELECT)
@@ -199,7 +182,14 @@ export async function getProfilePosts(
     .order("created_at", { ascending: false })
     .limit(50);
 
-  query = tab === "replies" ? query.not("parent_id", "is", null) : query.is("parent_id", null);
+  if (tab === "replies") {
+    query = query.not("parent_id", "is", null).is("repost_of_id", null);
+  } else if (tab === "reposts") {
+    query = query.not("repost_of_id", "is", null);
+  } else {
+    // top-level original posts (exclude reposts and replies)
+    query = query.is("parent_id", null).is("repost_of_id", null);
+  }
 
   const { data } = await query;
   return enrich(supabase, (data ?? []) as unknown as PostWithAuthor[], viewerId);

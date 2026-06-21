@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PostCard } from "@/components/PostCard";
 import { FeedSkeleton } from "@/components/Skeletons";
+import { StartThread } from "@/components/StartThread";
 import { fetchFeedPage } from "@/app/actions";
 import { useAuth } from "@/lib/auth";
 import { useT } from "@/lib/i18n";
@@ -87,7 +88,7 @@ export function Feed({
 
   return (
     <div>
-      <div className="glass sticky top-0 z-20 grid grid-cols-2 border-b border-border md:top-0">
+      <div className="glass sticky top-14 z-20 grid grid-cols-2 border-b border-border md:top-0">
         <Tab active={scope === "for-you"} onClick={() => setScope("for-you")}>
           {t("feed.forYou")}
         </Tab>
@@ -95,6 +96,8 @@ export function Feed({
           {t("feed.following")}
         </Tab>
       </div>
+
+      <StartThread />
 
       {showFollowingSignedOut ? (
         <EmptyState title={t("feed.followingEmptyTitle")} body={t("feed.signedOutFollowing")} />
@@ -143,7 +146,7 @@ function Tab({
     >
       {children}
       {active && (
-        <span className="absolute inset-x-0 bottom-0 mx-auto h-0.5 w-14 rounded-full brand-gradient" />
+        <span className="absolute inset-x-0 bottom-0 h-0.5 w-full bg-text" />
       )}
     </button>
   );

@@ -81,7 +81,7 @@ export function PostActions({ post }: { post: PostWithAuthor }) {
         count={likes}
         active={liked}
         activeClass="text-like"
-        icon={<Heart className={cn("h-[18px] w-[18px]", liked && "fill-like")} />}
+        icon={<Heart className={cn("h-[20px] w-[20px]", liked && "fill-like")} />}
         hoverClass="hover:text-like"
         pop={liked}
       />
@@ -89,7 +89,7 @@ export function PostActions({ post }: { post: PostWithAuthor }) {
         onClick={reply}
         label={t("post.reply")}
         count={post.replies_count}
-        icon={<MessageCircle className="h-[18px] w-[18px]" />}
+        icon={<MessageCircle className="h-[20px] w-[20px]" />}
         hoverClass="hover:text-link"
       />
       <ActionButton
@@ -98,13 +98,13 @@ export function PostActions({ post }: { post: PostWithAuthor }) {
         count={reposts}
         active={reposted}
         activeClass="text-emerald-500"
-        icon={<Repeat2 className="h-[18px] w-[18px]" />}
+        icon={<Repeat2 className="h-[20px] w-[20px]" />}
         hoverClass="hover:text-emerald-500"
       />
       <ActionButton
         onClick={share}
         label={t("post.share")}
-        icon={<Share className="h-[18px] w-[18px]" />}
+        icon={<Share className="h-[20px] w-[20px]" />}
         hoverClass="hover:text-link"
       />
     </div>

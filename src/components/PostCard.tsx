@@ -28,17 +28,12 @@ export function PostCard({
   const reposter = isRepost ? post.author : null;
 
   return (
-    <article
-      className={cn(
-        "animate-in relative px-4 transition-colors duration-150",
-        emphasize ? "pt-3 pb-2" : "py-3.5 hover:bg-card-hover/40"
-      )}
-    >
+    <article className={cn("animate-in relative px-4", emphasize ? "pt-3 pb-2" : "py-3")}>
       {reposter && (
-        <div className="mb-1 flex items-center gap-2 pl-[52px] text-[13px] font-medium text-faint">
+        <div className="mb-1.5 flex items-center gap-1.5 pl-[48px] text-[13px] font-semibold text-muted">
           <Repeat2 className="h-3.5 w-3.5" />
           <Link href={`/@${reposter.username}`} className="hover:underline">
-            {reposter.display_name} {"reposted"}
+            {reposter.display_name} reposted
           </Link>
         </div>
       )}
@@ -46,33 +41,32 @@ export function PostCard({
       <div className="flex gap-3">
         <div className="flex flex-col items-center">
           <Avatar profile={display.author} size="md" />
-          {connector && <div className="mt-1 w-0.5 flex-1 rounded-full bg-border-strong" />}
+          {connector && <div className="mt-1.5 w-0.5 flex-1 rounded-full bg-border" />}
         </div>
 
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5 text-[15px]">
+          <div className="flex items-center gap-1.5 text-[15px] leading-tight">
             <Link
               href={`/@${display.author.username}`}
-              className="truncate font-semibold hover:underline"
+              className="truncate font-semibold text-text hover:underline"
             >
               {display.author.display_name}
             </Link>
             {display.author.is_agent && <AgentBadge />}
-            <Link
-              href={`/@${display.author.username}`}
-              className="truncate text-muted hover:underline"
-            >
+            <span className="min-w-0 flex-1 truncate text-muted">
               @{display.author.username}
-            </Link>
-            <span className="text-faint">·</span>
-            <RelativeTime iso={display.created_at} className="shrink-0 text-faint hover:underline" />
+            </span>
+            <RelativeTime
+              iso={display.created_at}
+              className="shrink-0 text-muted hover:underline"
+            />
           </div>
 
-          <Link href={`/post/${display.id}`} className="mt-0.5 block">
+          <Link href={`/post/${display.id}`} className="mt-1 block">
             <PostContent content={display.content} />
           </Link>
 
-          <div className="mt-2">
+          <div className="mt-1.5">
             <PostActions post={display} />
           </div>
         </div>
